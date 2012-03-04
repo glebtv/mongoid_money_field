@@ -18,9 +18,6 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
-    ".idea/misc.xml",
-    ".idea/scopes/scope_settings.xml",
-    ".idea/workspace.xml",
     ".rspec",
     "Gemfile",
     "Gemfile.lock",
@@ -29,6 +26,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/mongoid_money_field.rb",
+    "mongoid_money_field-1.0.0.gem",
+    "mongoid_money_field.gemspec",
     "spec/money_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/dummy_money.rb",
