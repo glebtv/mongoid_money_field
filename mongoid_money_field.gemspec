@@ -4,13 +4,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "money_mongoid"
-  s.version = "0.0.0"
+  s.name = "mongoid_money_field"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["glebtv"]
   s.date = "2012-03-04"
-  s.description = "TODO: longer description of your gem"
+  s.description = "Use RubyMoney with mongoid"
   s.email = "glebtv@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -31,13 +31,14 @@ Gem::Specification.new do |s|
     "lib/mongoid_money_field.rb",
     "spec/money_spec.rb",
     "spec/spec_helper.rb",
-    "spec/support/dummy_money.rb"
+    "spec/support/dummy_money.rb",
+    "spec/support/dummy_prices.rb"
   ]
-  s.homepage = "http://github.com/glebtv/money_mongoid"
+  s.homepage = "http://github.com/glebtv/mongoid_money_field"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.15"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "Use RubyMoney with mongoid"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

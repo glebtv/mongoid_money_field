@@ -15,7 +15,7 @@ Inspired by https://gist.github.com/840500
 
 Include the gem in your Gemfile
 
-    gem 'mongoid_money_field', git: 'git://github.com/glebtv/mongoid_money_field.git'
+    gem 'mongoid_money_field'
     
 == Usage
 
