@@ -1,10 +1,9 @@
 == mongoid money field
 
-This is a super simple gem to use RubyMoney money type columns
-    
-    https://github.com/RubyMoney/money
-    
-with mongoid
+This is a super simple gem to use RubyMoney money type columns with mongoid
+
+https://github.com/RubyMoney/money
+https://github.com/mongoid/mongoid
 
 == Description
 
