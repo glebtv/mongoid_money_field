@@ -1,13 +1,16 @@
-= money_mongoid
+= mongoid_money_field
 
 This is the gem to use RubyMoney money type columns
+    
     https://github.com/RubyMoney/money
+    
 with mongoid
 
 ## Description
 
 A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
+Inspired by https://gist.github.com/840500
 
 ## Installation
 
