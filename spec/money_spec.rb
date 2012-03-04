@@ -39,6 +39,15 @@ describe Mongoid::MoneyField do
     end
   end
 
+  describe 'should handle currency' do
+    it 'should have a Money value of 0' do
+      DummyMoney.create(description: "Test", price: '1.23 RUB')
+      dummy = DummyMoney.first
+      dummy.price.currency.iso_code.should eq 'RUB'
+      dummy.price.cents.should eq 123
+    end
+  end
+  
   describe 'when accessing a document from the datastore with a Money datatype and blank value' do
     before(:each) do
       DummyMoney.create(description: "Test", price: '')
@@ -48,7 +57,7 @@ describe Mongoid::MoneyField do
       dummy = DummyMoney.first
       dummy.price.should eq Money.parse('0')
     end
-  end  
+  end
   
   describe 'when accessing a document from the datastore with multiple Money datatypes' do
     before(:each) do
@@ -67,5 +76,5 @@ describe Mongoid::MoneyField do
       dummy = DummyPrices.first
       dummy.price3.should eq Money.parse('1')
     end
-  end  
+  end
 end
