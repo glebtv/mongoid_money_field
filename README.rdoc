@@ -1,24 +1,24 @@
-= mongoid_money_field
+== mongoid money field
 
-This is the gem to use RubyMoney money type columns
+This is a super simple gem to use RubyMoney money type columns
     
     https://github.com/RubyMoney/money
     
 with mongoid
 
-## Description
+== Description
 
 A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
 Inspired by https://gist.github.com/840500
 
-## Installation
+== Installation
 
 Include the gem in your Gemfile
 
     gem 'mongoid_money_field', git: 'git://github.com/glebtv/mongoid_money_field.git'
     
-## Usage
+== Usage
 
     class DummyMoney
       include Mongoid::Document
