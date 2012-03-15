@@ -5,5 +5,6 @@ class DummyPrices
   field :description
   
   money_field :price1, :price2, :price3
+  
 
 end
