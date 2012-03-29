@@ -15,6 +15,12 @@ describe Mongoid::MoneyField do
       dummy.price = '$9.99'
       dummy.save.should eq true
     end
+    
+    it 'should be persisted normally when set as Money' do
+      dummy = DummyMoney.new
+      dummy.price = Money.parse(1.23)
+      dummy.save.should eq true
+    end
   end
   
   describe 'when accessing a document from the datastore with a Money datatype' do
@@ -25,6 +31,30 @@ describe Mongoid::MoneyField do
     it 'should have a Money value that matches the money value that was initially persisted' do
       dummy = DummyMoney.first
       dummy.price.should eq Money.parse('9.99')
+    end
+  end
+  
+  describe 'when accessing a document from the datastore with a Money datatype set as money' do
+    before(:each) do
+      dm = DummyMoney.create(:description => "Test")
+      dm.price = Money.parse('1.23')
+      dm.save!
+    end
+    
+    it 'should have a Money value that matches the money value that was initially persisted' do
+      dummy = DummyMoney.first
+      dummy.price.cents.should eq 123
+    end
+  end
+  
+  describe 'when accessing a document from the datastore with a Money datatype set as money with mass asignment' do
+    before(:each) do
+      DummyMoney.create(:description => "Test", :price => Money.parse('1.23'))
+    end
+    
+    it 'should have a Money value that matches the money value that was initially persisted' do
+      dummy = DummyMoney.first
+      dummy.price.cents.should eq 123
     end
   end
   
@@ -57,6 +87,29 @@ describe Mongoid::MoneyField do
       dummy = DummyMoney.first
       dummy.price.should eq Money.parse('0')
     end
+  end
+  
+  describe 'when accessing a document from the datastore with embedded documents with money fields' do
+    before(:each) do
+      o = DummyOrder.new(first_name: 'test')
+      
+      o.dummy_line_items << DummyLineItem.new({name: 'item 1', price: Money.new(1299)})
+      li = DummyLineItem.new({name: 'item 2', price: Money.new(1499)})
+      o.dummy_line_items.push li
+      
+      o.save
+    end
+    
+    it 'should have correct value for first item' do
+      o = DummyOrder.first
+      o.dummy_line_items.first.price.should eq Money.parse('12.99')
+    end
+    
+    it 'should have correct value for first item' do
+      o = DummyOrder.first
+      o.dummy_line_items.last.price.should eq Money.parse('14.99')
+    end
+    
   end
   
   describe 'when accessing a document from the datastore with multiple Money datatypes' do
