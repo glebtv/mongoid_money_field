@@ -3,4 +3,4 @@ test:
     default:
       database: mongoid_money_field
       hosts:
-        - mg2.gleb.tv:27017
+        - localhost:27017
