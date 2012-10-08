@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "mongoid_money_field"
-  s.version = "2.1.0"
+  s.version = "3.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["glebtv"]
@@ -19,24 +19,29 @@ Gem::Specification.new do |s|
     ".document",
     ".rspec",
     ".rvmrc",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "MIT-LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "gemfiles/mongoid2.gemfile",
+    "gemfiles/mongoid3.gemfile",
     "lib/mongoid_money_field.rb",
     "mongoid_money_field.gemspec",
     "spec/money_spec.rb",
-    "spec/mongoid.yml",
     "spec/spec_helper.rb",
     "spec/support/dummy_embedded.rb",
     "spec/support/dummy_money.rb",
+    "spec/support/dummy_money_required.rb",
     "spec/support/dummy_money_with_default.rb",
     "spec/support/dummy_money_with_default_with_currency.rb",
     "spec/support/dummy_money_with_fixed_currency.rb",
     "spec/support/dummy_money_without_default.rb",
-    "spec/support/dummy_prices.rb"
+    "spec/support/dummy_override_default_currency.rb",
+    "spec/support/dummy_prices.rb",
+    "spec/support/dummy_with_default_currency.rb"
   ]
   s.homepage = "http://github.com/glebtv/mongoid_money_field"
   s.licenses = ["MIT"]
@@ -50,18 +55,18 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<mongoid>, [">= 2.4.0"])
       s.add_runtime_dependency(%q<money>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.11.0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.1.0"])
+      s.add_development_dependency(%q<bundler>, ["~> 1.2.1"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_development_dependency(%q<simplecov>, [">= 0.4.0"])
       s.add_development_dependency(%q<database_cleaner>, ["~> 0.8.0"])
     else
       s.add_dependency(%q<mongoid>, [">= 2.4.0"])
       s.add_dependency(%q<money>, [">= 0"])
-      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.11.0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
-      s.add_dependency(%q<bundler>, ["~> 1.1.0"])
+      s.add_dependency(%q<bundler>, ["~> 1.2.1"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_dependency(%q<simplecov>, [">= 0.4.0"])
       s.add_dependency(%q<database_cleaner>, ["~> 0.8.0"])
@@ -69,9 +74,9 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<mongoid>, [">= 2.4.0"])
     s.add_dependency(%q<money>, [">= 0"])
-    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.11.0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
-    s.add_dependency(%q<bundler>, ["~> 1.1.0"])
+    s.add_dependency(%q<bundler>, ["~> 1.2.1"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
     s.add_dependency(%q<simplecov>, [">= 0.4.0"])
     s.add_dependency(%q<database_cleaner>, ["~> 0.8.0"])
