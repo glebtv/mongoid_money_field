@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: mongoid_money_field
+      hosts:
+        - mg2.gleb.tv:27017

@@ -10,13 +10,12 @@ SimpleCov.start
 
 require 'mongoid_money_field'
 
+Money.default_currency = Money::Currency.new("RUB")
+
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
-
-
-
-Mongoid.config.master = Mongo::Connection.new.db("mongoid_money_field_test")
+Mongoid.load!("#{File.dirname(__FILE__)}/mongoid.yml", :test)
 Mongoid.logger = Logger.new($stdout)
 
 DatabaseCleaner.orm = "mongoid"

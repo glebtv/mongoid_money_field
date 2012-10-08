@@ -21,6 +21,19 @@ describe Mongoid::MoneyField do
       dummy.price = Money.parse(1.23)
       dummy.save.should eq true
     end
+
+    it 'should be possible to set value to nil' do
+      dummy = DummyMoney.new
+      dummy.price = Money.parse(1.23)
+      dummy.save.should eq true
+
+      dummy = DummyMoney.first
+      dummy.price.should eq Money.parse(1.23)
+      dummy.price = nil
+      dummy.save.should eq true
+      dummy = DummyMoney.first
+      dummy.price.should be_nil
+    end
   end
   
   describe 'when accessing a document from the datastore with a Money datatype' do
@@ -59,22 +72,63 @@ describe Mongoid::MoneyField do
   end
   
   describe 'when accessing a document from the datastore with a Money datatype and empty value' do
-    before(:each) do
-      DummyMoney.create(:description => "Test")
+    it 'should be nil' do
+      dummy = DummyMoney.new
+      dummy.save.should eq true
+      DummyMoney.first.price.should be_nil
     end
-    
-    it 'should have a Money value of 0' do
-      dummy = DummyMoney.first
-      dummy.price.should eq Money.parse('0')
+
+    it 'should set money to default currency if money is given without it' do
+      dummy = DummyMoneyWithDefault.new
+      dummy.save.should eq true
+      dummy = DummyMoneyWithDefault.first
+      dummy.price.currency.iso_code.should eq Money.default_currency.iso_code
+      dummy.price.cents.should eq 100
+    end
+
+    it 'should set money to correct currency if money is given with it' do
+      dummy = DummyMoneyWithDefaultWithCurrency.new
+      dummy.save.should eq true
+      dummy = DummyMoneyWithDefaultWithCurrency.first
+      dummy.price.currency.iso_code.should eq 'GBP'
+      dummy.price.cents.should eq 100
     end
   end
 
-  describe 'should handle currency' do
-    it 'should have a Money value of 0' do
+
+  describe 'when accessing a document from the datastore with a Money datatype and fixed currency' do
+    it 'should have correct currency when value is set to 5$' do
+      DummyMoneyWithFixedCurrency.create!(price: '5$')
+      dummy = DummyMoneyWithFixedCurrency.first
+      dummy.price.currency.iso_code.should eq 'GBP'
+      dummy.price.cents.should eq 500
+      dummy.price.should eq Money.parse('5 GBP')
+    end
+
+    it 'should have correct currency when value is set to 100 RUB' do
+      DummyMoneyWithFixedCurrency.create!(price: '100 RUB')
+      dummy = DummyMoneyWithFixedCurrency.first
+      dummy.price.currency.iso_code.should eq 'GBP'
+      dummy.price.cents.should eq 100_00
+      dummy.price.should eq Money.parse('100 GBP')
+    end
+  end
+
+  describe 'when setting to a string value with currency' do
+    it 'should handle RUB' do
       DummyMoney.create(description: "Test", price: '1.23 RUB')
       dummy = DummyMoney.first
       dummy.price.currency.iso_code.should eq 'RUB'
       dummy.price.cents.should eq 123
+      dummy.price.should eq Money.parse('1.23 RUB')
+    end
+
+    it 'should handle $' do
+      DummyMoney.create(description: "Test", price: '1.23 USD')
+      dummy = DummyMoney.first
+      dummy.price.currency.iso_code.should eq 'USD'
+      dummy.price.cents.should eq 123
+      dummy.price.should eq Money.parse('1.23 USD')
     end
   end
   
@@ -83,9 +137,19 @@ describe Mongoid::MoneyField do
       DummyMoney.create(description: "Test", price: '')
     end
     
-    it 'should have a Money value of 0' do
+    it 'should be nil' do
       dummy = DummyMoney.first
-      dummy.price.should eq Money.parse('0')
+      dummy.price.should be_nil
+    end
+
+    it 'should be updated correctly' do
+      dummy = DummyMoney.first
+      dummy.price.should be_nil
+      dummy.price = '1.23 USD'
+      dummy.save.should eq true
+      dummy = DummyMoney.first
+      dummy.price.currency.iso_code.should eq 'USD'
+      dummy.price.cents.should eq 123
     end
   end
   

@@ -31,6 +31,9 @@ Include the gem in your Gemfile
 
 All Money values are converted and stored in mongo as cents and currency in two separate fields.
 
+== Finding by price
+
+DummyMoney.where(price_cents: 123).first
 
 == Copyright
 
