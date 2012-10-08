@@ -15,9 +15,10 @@ A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
 Inspired by https://gist.github.com/840500
 
-== updating
+== Updating
 v3 breaks backwards compatibility in favour of having syntax and defaults similar to field mongoid macro
-to get the same behaviour as 1.0 please add `default: 0` to field declaration, like this
+
+To get the same behaviour as 1.0 please add "default: 0" to field declaration, like this
 
     money_field :price, default: 0
 
