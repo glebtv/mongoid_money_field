@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class DummyOrder
   include Mongoid::Document
   embeds_many :dummy_line_items

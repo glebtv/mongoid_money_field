@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class DummyMoneyWithoutDefault
   include Mongoid::Document
   include Mongoid::MoneyField

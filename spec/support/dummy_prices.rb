@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class DummyPrices
   include Mongoid::Document
   include Mongoid::MoneyField
