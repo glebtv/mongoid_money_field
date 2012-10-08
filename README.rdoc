@@ -27,6 +27,11 @@ Include the gem in your Gemfile
       
       money_field :price
 
+      # to disallow changing currency (and to not store it in database)
+      money_field_with_options :price2, fixed_currency: 'GBP'
+
+      # set a default
+      money_field_with_options :price3, default: '1.23 RUB'
     end
 
 All Money values are converted and stored in mongo as cents and currency in two separate fields.

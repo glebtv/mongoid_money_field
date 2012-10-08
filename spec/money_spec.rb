@@ -86,6 +86,17 @@ describe Mongoid::MoneyField do
       dummy.price.cents.should eq 100
     end
 
+    it 'should set money to default currency if money is given without it on a document with multiple money fields' do
+      dummy = DummyPrices.new
+      dummy.save.should eq true
+      dummy = DummyPrices.first
+      dummy.price.currency.iso_code.should eq Money.default_currency.iso_code
+      dummy.price.cents.should eq 100
+
+      dummy.price1.should be_nil
+    end
+
+
     it 'should set money to correct currency if money is given with it' do
       dummy = DummyMoneyWithDefaultWithCurrency.new
       dummy.save.should eq true
