@@ -16,8 +16,7 @@ Money.default_currency = Money::Currency.new("RUB")
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
-# Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
-require "#{File.dirname(__FILE__)}/support/dummy_with_default_currency"
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 def mongoid3?
   defined?(Mongoid::VERSION) && Gem::Version.new(Mongoid::VERSION) >= Gem::Version.new('3.0.0.rc')
