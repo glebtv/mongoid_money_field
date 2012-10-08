@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'mongoid', '~> 3.0.6'
+gem 'mongoid', '>= 2.4.0'
 gem 'money'
 
 group :development do
