@@ -6,6 +6,6 @@ class DummyMoneyWithoutDefault
   
   field :description
   
-  money_field_without_default :price
+  money_field :price
 
 end

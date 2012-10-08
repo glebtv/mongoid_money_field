@@ -6,9 +6,8 @@ class DummyPrices
   
   field :description
   
-  money_field :price1, :price2, :price3
+  money_field :price1, default: 0
+  money_field :price2, :price3
 
-  money_field_with_options :price, default: 1.00
-  
-  money_field_without_default :price_nodef
+  money_field :price, default: 1.00
 end

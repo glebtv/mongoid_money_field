@@ -6,5 +6,5 @@ class DummyMoneyWithFixedCurrency
 
   field :description
 
-  money_field_with_options :price, fixed_currency: 'GBP'
+  money_field :price, fixed_currency: 'GBP'
 end

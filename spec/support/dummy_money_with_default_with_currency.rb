@@ -6,5 +6,5 @@ class DummyMoneyWithDefaultWithCurrency
 
   field :description
 
-  money_field_with_options :price, default: '1.00 GBP'
+  money_field :price, default: '1.00 GBP'
 end

@@ -3,9 +3,50 @@
 require 'spec_helper'
 
 describe Mongoid::MoneyField do
-  
+
+  describe 'when money field is required' do
+    it 'should be valid to save when field is filled in' do
+      dummy = DummyMoneyRequired.new
+      dummy.price = '$10'
+      dummy.should be_valid
+      dummy.save.should eq true
+    end
+
+    it 'should be not valid to save when field is not filled in' do
+      dummy = DummyMoneyRequired.new
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 2
+      dummy.errors.messages[:price][0].should eq "invalid value for price"
+      dummy.errors.messages[:price][1].should eq "invalid value for price currency"
+      dummy.save.should eq false
+    end
+
+    it 'should be not valid to save when field is filled in but currency is not' do
+      dummy = DummyMoneyRequired.new
+      dummy.price_cents = 123
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "invalid value for price currency"
+      dummy.save.should eq false
+    end
+  end
+
+  describe 'when both default currency and fixed currency is specified' do
+    it 'should use fixed currency instead of default' do
+      DummyOverrideDefaultCurrency.create!(price: '1.23')
+      DummyOverrideDefaultCurrency.first.price.currency.iso_code.should eq 'GBP'
+    end
+  end
+
+  describe 'when default currency is specified' do
+    it 'should use it instead of Money.default_currency' do
+      DummyWithDefaultCurrency.create!(price: '1.23')
+      DummyWithDefaultCurrency.first.price.currency.iso_code.should eq 'EUR'
+      Money.default_currency.iso_code.should eq 'RUB'
+    end
+  end
+
   describe 'when persisting a document with a Money datatype' do
-  
     it 'should be persisted normally when set as dollars' do
       dummy = DummyMoney.new
       dummy.price = '$10'
@@ -101,7 +142,7 @@ describe Mongoid::MoneyField do
       dummy.price.currency.iso_code.should eq Money.default_currency.iso_code
       dummy.price.cents.should eq 100
       
-      dummy.price_nodef.should be_nil
+      dummy.price2.should be_nil
 
       dummy.price1.cents.should eq 0
     end

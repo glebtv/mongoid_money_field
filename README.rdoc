@@ -9,19 +9,26 @@ https://github.com/RubyMoney/money
 
 https://github.com/mongoid/mongoid
 
-
 == Description
 
 A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
 Inspired by https://gist.github.com/840500
 
+== updating
+v3 breaks backwards compatibility in favour of having syntax and defaults similar to field mongoid macro
+to get the same behaviour as 1.0 please add `default: 0` to field declaration, like this
+
+    money_field :price, default: 0
+
+please avoid using v2, i realized that API was stupid after commiting it.
+
 == Installation
 
 Include the gem in your Gemfile
 
     gem 'mongoid_money_field'
-    
+
 == Usage
 
     class DummyMoney
@@ -29,15 +36,24 @@ Include the gem in your Gemfile
       include Mongoid::MoneyField
       
       field :description
-      
-      money_field :cart_total # defaults to 0
-      money_field_without_default :price, :old_price # defaults to nil
+
+      # defaults to 0
+      money_field :cart_total, default: 0
+
+      # defaults to nil
+      money_field :price, :old_price, default: nil # defaults to nil
 
       # to disallow changing currency (and to not store it in database)
-      money_field_with_options :price2, fixed_currency: 'GBP'
+      money_field :price2, fixed_currency: 'GBP'
 
       # set a default
-      money_field_with_options :price3, default: '1.23 RUB'
+      money_field :price3, default: '1.23 RUB'
+
+      # make required
+      money_field :price4, required: true, default_currency: nil
+
+      # default_currency is Money.default_currency.iso_code if not specified
+      # fixed_currency overrides default_currency if set
     end
 
 All Money values are converted and stored in mongo as cents and currency in two separate fields.
