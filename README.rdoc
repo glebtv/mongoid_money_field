@@ -11,14 +11,6 @@ A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
 Inspired by https://gist.github.com/840500
 
-== Updating
-
-v2.0 breaks compatibility as it does not give 0 cents default anymore. Use
-
-  money_field_with_options :price, default: 0
-
-instead
-
 == Installation
 
 Include the gem in your Gemfile
@@ -33,7 +25,8 @@ Include the gem in your Gemfile
       
       field :description
       
-      money_field :price, :old_price
+      money_field :cart_total # defaults to 0
+      money_field_without_default :price, :old_price # defaults to nil
 
       # to disallow changing currency (and to not store it in database)
       money_field_with_options :price2, fixed_currency: 'GBP'

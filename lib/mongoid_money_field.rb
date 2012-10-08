@@ -66,6 +66,10 @@ module Mongoid
       end
 
       def money_field(*columns)
+        money_field_with_options(columns, default: 0)
+      end
+      
+      def money_field_without_default(*columns)
         money_field_with_options(columns)
       end
     end

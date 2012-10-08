@@ -73,9 +73,15 @@ describe Mongoid::MoneyField do
   
   describe 'when accessing a document from the datastore with a Money datatype and empty value' do
     it 'should be nil' do
+      dummy = DummyMoneyWithoutDefault.new
+      dummy.save.should eq true
+      DummyMoneyWithoutDefault.first.price.should be_nil
+    end
+    
+      it 'should be 0 when used with default' do
       dummy = DummyMoney.new
       dummy.save.should eq true
-      DummyMoney.first.price.should be_nil
+      DummyMoney.first.price.cents.should eq 0
     end
 
     it 'should set money to default currency if money is given without it' do
@@ -92,8 +98,10 @@ describe Mongoid::MoneyField do
       dummy = DummyPrices.first
       dummy.price.currency.iso_code.should eq Money.default_currency.iso_code
       dummy.price.cents.should eq 100
+      
+      dummy.price_nodef.should be_nil
 
-      dummy.price1.should be_nil
+      dummy.price1.cents.should eq 0
     end
 
 
