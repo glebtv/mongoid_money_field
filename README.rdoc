@@ -1,6 +1,6 @@
 == mongoid money field
 
-
+{<img src="https://secure.travis-ci.org/glebtv/mongoid_money_field.png" alt="Build Status" />}[http://travis-ci.org/glebtv/mongoid_money_field]
 {<img src="https://gemnasium.com/glebtv/mongoid_money_field.png" alt="Dependency Status" />}[https://gemnasium.com/glebtv/mongoid_money_field]
 
 This is a super simple gem to use RubyMoney money type columns with mongoid
