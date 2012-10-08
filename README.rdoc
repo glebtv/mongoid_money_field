@@ -6,7 +6,9 @@
 This is a super simple gem to use RubyMoney money type columns with mongoid
 
 https://github.com/RubyMoney/money
+
 https://github.com/mongoid/mongoid
+
 
 == Description
 
