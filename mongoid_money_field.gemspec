@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "mongoid_money_field"
-  s.version = "2.0.1"
+  s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["glebtv"]
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "spec/support/dummy_money_with_default.rb",
     "spec/support/dummy_money_with_default_with_currency.rb",
     "spec/support/dummy_money_with_fixed_currency.rb",
+    "spec/support/dummy_money_without_default.rb",
     "spec/support/dummy_prices.rb"
   ]
   s.homepage = "http://github.com/glebtv/mongoid_money_field"
