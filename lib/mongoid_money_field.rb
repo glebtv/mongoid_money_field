@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 # coding: utf-8
 
 module SimpleForm
@@ -104,9 +106,15 @@ module Mongoid
             value
           end
           
+          # присвоение через форму
           define_method( "#{attr_plain}=" ) do |value|
             instance_variable_set( "@#{attr_plain}".to_sym, value )
-            
+          end
+
+          # присвоение в коде
+          define_method( "#{name}=" ) do |value|
+            instance_variable_set( "@#{attr_plain}".to_sym, value )
+
             if value.blank?
               write_attribute( attr_cents, nil )
               write_attribute( attr_currency, nil ) if opts[:fixed_currency].nil?
