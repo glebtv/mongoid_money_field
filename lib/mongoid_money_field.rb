@@ -20,15 +20,10 @@ module Mongoid
           default_currency: nil
         }.merge( opts )
 
-        @@logger ||= Logger.new( File.join( Rails.root, 'log', 'mongoid_money_field.log' ) )
-        @@logger.info( Time.now.strftime('%Y.%m.%d %H:%M:%S') )
-
         [ columns ].flatten.each do |name|
           default, default_cents = nil, nil
 
           name = name.to_s
-
-          @@logger.info( 'Start defining ' + name )
 
           unless opts[:default].nil?
             default = Money.parse( opts[:default] )
@@ -57,8 +52,6 @@ module Mongoid
           end
 
           define_method( attr_before_type_cast ) do
-            @@logger.info( attr_before_type_cast )
-
             code = ( opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency] ) 
             currency = Money::Currency.find( code ) || Money.default_currency
 
@@ -68,8 +61,6 @@ module Mongoid
           end
 
           define_method( name ) do
-            @@logger.info( name )
-
             cents = read_attribute( attr_cents )
 
             code = opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency]
@@ -78,8 +69,6 @@ module Mongoid
           end
           
           define_method( attr_plain ) do
-            @@logger.info( attr_plain )
-
             value = instance_variable_get( "@#{attr_plain}".to_sym )
             value = self.send( name ) if value.nil?
             value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
@@ -88,8 +77,6 @@ module Mongoid
           end
           
           define_method( "#{attr_plain}=" ) do |value|
-            @@logger.info( "#{attr_plain}=" )
-
             instance_variable_set( "@#{attr_plain}".to_sym, value )
 
             if value.blank?
@@ -116,12 +103,8 @@ module Mongoid
           end
 
           define_method( "#{name}=" ) do |value|
-            @@logger.info( "#{name}=" )
-
             self.send( "#{attr_plain}=", value )
           end
-
-          @@logger.info( "End defining " + name )
         end
       end
     end
