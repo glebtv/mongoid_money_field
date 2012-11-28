@@ -20,15 +20,15 @@ module Mongoid
           default_currency: nil
         }.merge( opts )
 
-        @@logger ||= Logger.new( Rails.root, 'log' )
+        @@logger ||= Logger.new( File.join( Rails.root, 'log', 'mongoid_money_field.log' ) )
         @@logger.info( Time.now.strftime('%Y.%m.%d %H:%M:%S') )
 
         [ columns ].flatten.each do |name|
           default, default_cents = nil, nil
 
-          @@logger.info( 'Start defining ' + name )
-
           name = name.to_s
+
+          @@logger.info( 'Start defining ' + name )
 
           unless opts[:default].nil?
             default = Money.parse( opts[:default] )
