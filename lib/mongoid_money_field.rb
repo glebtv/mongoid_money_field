@@ -20,8 +20,13 @@ module Mongoid
           default_currency: nil
         }.merge( opts )
 
+        @@logger ||= Logger.new( Rails.root, 'log' )
+        @@logger.info( Time.now.strftime('%Y.%m.%d %H:%M:%S') )
+
         [ columns ].flatten.each do |name|
           default, default_cents = nil, nil
+
+          @@logger.info( 'Start defining ' + name )
 
           name = name.to_s
 
@@ -51,7 +56,9 @@ module Mongoid
             field attr_currency, type: String, default: default_currency
           end
 
-          define_method( attr_before_type_cast.to_sym ) do
+          define_method( attr_before_type_cast ) do
+            @@logger.info( attr_before_type_cast )
+
             code = ( opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency] ) 
             currency = Money::Currency.find( code ) || Money.default_currency
 
@@ -60,7 +67,9 @@ module Mongoid
             value = value.gsub( currency.thousands_separator, '' ).gsub( currency.decimal_mark, '.' )
           end
 
-          define_method( name.to_sym ) do
+          define_method( name ) do
+            @@logger.info( name )
+
             cents = read_attribute( attr_cents )
 
             code = opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency]
@@ -68,21 +77,19 @@ module Mongoid
             cents.nil? ? nil : Money.new( cents, code || ::Money.default_currency )
           end
           
-          class_eval <<-CODE, __FILE__, __LINE__ + 1
-            def #{name}=( value )
-              self.#{attr_plain} = value
-            end
-            
-            def #{attr_plain}
-              value = @#{attr_plain}
-              value = self.#{name} if value.nil?
-              value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
+          define_method( attr_plain ) do
+            @@logger.info( attr_plain )
 
-              value
-            end
-          CODE
+            value = instance_variable_get( "@#{attr_plain}".to_sym )
+            value = self.send( name ) if value.nil?
+            value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
+
+            value
+          end
           
-          define_method( "#{attr_plain}=".to_sym ) do |value|
+          define_method( "#{attr_plain}=" ) do |value|
+            @@logger.info( "#{attr_plain}=" )
+
             instance_variable_set( "@#{attr_plain}".to_sym, value )
 
             if value.blank?
@@ -107,6 +114,14 @@ module Mongoid
             write_attribute( attr_cents, money.cents )
             write_attribute( attr_currency, money.currency.iso_code ) if opts[:fixed_currency].nil?            
           end
+
+          define_method( "#{name}=" ) do |value|
+            @@logger.info( "#{name}=" )
+
+            self.send( "#{attr_plain}=", value )
+          end
+
+          @@logger.info( "End defining " + name )
         end
       end
     end
