@@ -55,6 +55,13 @@ Include the gem in your Gemfile
 
       # default_currency is Money.default_currency.iso_code if not specified
       # fixed_currency overrides default_currency if set
+
+      # field can be validated as numeric value (with localized separators)
+      validates_numericality_of :price, greater_than: 0
+    end
+
+    simple_form_for do |f|
+      f.input :price, as: :money
     end
 
 All Money values are converted and stored in mongo as cents and currency in two separate fields.
