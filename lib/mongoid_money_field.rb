@@ -51,7 +51,7 @@ module Mongoid
             field attr_currency, type: String, default: default_currency
           end
 
-          define_method( attr_before_type_cast ) do
+          define_method( attr_before_type_cast.to_sym ) do
             code = ( opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency] ) 
             currency = Money::Currency.find( code ) || Money.default_currency
 
@@ -60,7 +60,7 @@ module Mongoid
             value = value.gsub( currency.thousands_separator, '' ).gsub( currency.decimal_mark, '.' )
           end
 
-          define_method( name ) do
+          define_method( name.to_sym ) do
             cents = read_attribute( attr_cents )
 
             code = opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency]
@@ -68,7 +68,7 @@ module Mongoid
             cents.nil? ? nil : Money.new( cents, code || ::Money.default_currency )
           end
           
-          define_method( attr_plain ) do
+          define_method( attr_plain.to_sym ) do
             value = instance_variable_get( "@#{attr_plain}".to_sym )
             value = self.send( name ) if value.nil?
             value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
@@ -76,7 +76,11 @@ module Mongoid
             value
           end
           
-          define_method( "#{attr_plain}=" ) do |value|
+          define_method( "#{name}=".to_sym ) do |value|
+            self.send( "#{attr_plain}=", value )
+          end
+          
+          define_method( "#{attr_plain}=".to_sym ) do |value|
             instance_variable_set( "@#{attr_plain}".to_sym, value )
 
             if value.blank?
@@ -100,10 +104,6 @@ module Mongoid
 
             write_attribute( attr_cents, money.cents )
             write_attribute( attr_currency, money.currency.iso_code ) if opts[:fixed_currency].nil?            
-          end
-
-          define_method( "#{name}=" ) do |value|
-            self.send( "#{attr_plain}=", value )
           end
         end
       end
