@@ -1,32 +1,5 @@
 #encoding: utf-8
 
-# coding: utf-8
-
-module SimpleForm
-  module Inputs
-    class MoneyInput < Base
-      enable :placeholder, :min_max
-
-      def input
-        add_size!
-        input_html_classes.unshift("numeric")
-        if html5?
-          input_html_options[:type] ||= "number"
-          input_html_options[:step] ||= integer? ? 1 : "any"
-        end
-        @builder.text_field("#{attribute_name}_plain", input_html_options)
-      end
-
-      private
-
-      # Rails adds the size attr by default, if the :size key does not exist.
-      def add_size!
-        input_html_options[:size] ||= nil
-      end
-    end
-  end
-end
-
 require 'money'
 
 module Mongoid
@@ -78,17 +51,15 @@ module Mongoid
             field attr_currency, type: String, default: default_currency
           end
 
-          # преобразования перед валидацией
           define_method( attr_before_type_cast ) do
-            code = opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency]
-            currency = Money::Currency.find( code )
+            code = ( opts[:fixed_currency].nil? ? read_attribute( attr_currency ) : opts[:fixed_currency] ) 
+            currency = Money::Currency.find( code ) || Money.default_currency
 
-            value = instance_variable_get( "@#{attr_plain}".to_sym )
+            value = self.send( attr_plain )
 
             value = value.gsub( currency.thousands_separator, '' ).gsub( currency.decimal_mark, '.' )
           end
 
-          # значение поля типа Money
           define_method( name ) do
             cents = read_attribute( attr_cents )
 
@@ -97,7 +68,6 @@ module Mongoid
             cents.nil? ? nil : Money.new( cents, code || ::Money.default_currency )
           end
           
-          # строковое значение поля
           define_method( attr_plain ) do
             value = instance_variable_get( "@#{attr_plain}".to_sym )
             value = self.send( name ) if value.nil?
@@ -106,13 +76,7 @@ module Mongoid
             value
           end
           
-          # присвоение через форму
           define_method( "#{attr_plain}=" ) do |value|
-            instance_variable_set( "@#{attr_plain}".to_sym, value )
-          end
-
-          # присвоение в коде
-          define_method( "#{name}=" ) do |value|
             instance_variable_set( "@#{attr_plain}".to_sym, value )
 
             if value.blank?
@@ -135,10 +99,35 @@ module Mongoid
             end
 
             write_attribute( attr_cents, money.cents )
-            write_attribute( attr_currency, money.currency.iso_code ) if opts[:fixed_currency].nil?
+            write_attribute( attr_currency, money.currency.iso_code ) if opts[:fixed_currency].nil?            
+          end
+
+          define_method( "#{name}=" ) do |value|
+            self.send( "#{attr_plain}=", value )
           end
         end
       end
     end
+  end
+end
+
+class MoneyInput < SimpleForm::Inputs::Base
+  enable :placeholder, :min_max
+
+  def input
+    add_size!
+    input_html_classes.unshift("numeric")
+    if html5?
+      input_html_options[:type] ||= "number"
+      input_html_options[:step] ||= integer? ? 1 : "any"
+    end
+    @builder.text_field("#{attribute_name}_plain", input_html_options)
+  end
+
+  private
+
+  # Rails adds the size attr by default, if the :size key does not exist.
+  def add_size!
+    input_html_options[:size] ||= nil
   end
 end
