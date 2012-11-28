@@ -68,17 +68,19 @@ module Mongoid
             cents.nil? ? nil : Money.new( cents, code || ::Money.default_currency )
           end
           
-          define_method( attr_plain.to_sym ) do
-            value = instance_variable_get( "@#{attr_plain}".to_sym )
-            value = self.send( name ) if value.nil?
-            value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
+          class_eval <<-CODE, __FILE__, __LINE__ + 1
+            def #{name}=( value )
+              self.#{attr_plain} = value
+            end
+            
+            def #{attr_plain}
+              value = @#{attr_plain}
+              value = self.#{name} if value.nil?
+              value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
 
-            value
-          end
-          
-          define_method( "#{name}=".to_sym ) do |value|
-            self.send( "#{attr_plain}=", value )
-          end
+              value
+            end
+          CODE
           
           define_method( "#{attr_plain}=".to_sym ) do |value|
             instance_variable_set( "@#{attr_plain}".to_sym, value )
