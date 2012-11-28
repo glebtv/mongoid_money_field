@@ -37,8 +37,12 @@ module Mongoid
 
           field attr_cents, type: Integer, default: default_cents
 
-          attr_accessible attr_plain
-          
+          attr_accessible attr_plain, name
+
+          if opts[:required]
+            validates_presence_of name
+          end
+
           if opts[:fixed_currency].nil?
             default_currency = nil
 
@@ -49,6 +53,12 @@ module Mongoid
             end
 
             field attr_currency, type: String, default: default_currency
+
+            if default_currency.nil?
+              before_save do
+                self[ attr_currency ] ||= Money.default_currency.iso_code
+              end
+            end
           end
 
           define_method( attr_before_type_cast ) do
@@ -57,7 +67,9 @@ module Mongoid
 
             value = self.send( attr_plain )
 
-            value = value.gsub( currency.thousands_separator, '' ).gsub( currency.decimal_mark, '.' )
+            return if value.nil?
+
+            value.gsub( currency.thousands_separator, '' ).gsub( currency.decimal_mark, '.' )
           end
 
           define_method( name ) do
@@ -85,8 +97,6 @@ module Mongoid
               
               return
             end
-
-            value = self.send( attr_before_type_cast )
 
             if opts[:default_currency].nil?
               money = value.to_money

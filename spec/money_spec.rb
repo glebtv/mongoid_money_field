@@ -15,19 +15,104 @@ describe Mongoid::MoneyField do
     it 'should be not valid to save when field is not filled in' do
       dummy = DummyMoneyRequired.new
       dummy.should_not be_valid
-      dummy.errors.count.should eq 2
-      dummy.errors.messages[:price][0].should eq "invalid value for price"
-      dummy.errors.messages[:price][1].should eq "invalid value for price currency"
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "can't be blank"
       dummy.save.should eq false
     end
 
-    it 'should be not valid to save when field is filled in but currency is not' do
+    it 'should be valid to save when field is filled in but currency is not' do
       dummy = DummyMoneyRequired.new
       dummy.price_cents = 123
+      dummy.should be_valid
+      dummy.save.should eq true
+      dummy.price_currency.should eq Money.default_currency.iso_code
+    end
+  end
+
+  describe 'when value is filled from code' do
+    it 'should raise the error when value consists non digits' do
+      dummy = DummyNotANumber.new
+      dummy.price = 'incorrect1'
       dummy.should_not be_valid
       dummy.errors.count.should eq 1
-      dummy.errors.messages[:price][0].should eq "invalid value for price currency"
+      dummy.errors.messages[:price][0].should eq "is not a number"
       dummy.save.should eq false
+    end
+
+    it 'should raise the error when value consists more then one decimal separator' do
+      dummy = DummyNotANumber.new
+      dummy.price = '121,212,22'
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "is not a number"
+      dummy.save.should eq false
+    end
+
+    it 'should raise the error when value is not present' do
+      dummy = DummyNotANumber.new
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "is not a number"
+      dummy.save.should eq false
+    end
+
+    it 'should raise the error when value is not present' do
+      dummy = DummyNotANumber.new( price: '' )
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "is not a number"
+      dummy.save.should eq false
+    end
+  end
+
+  describe 'when value is filled from SimpleForm' do
+    it 'should raise the error when value consists non digits' do
+      dummy = DummyNotANumber.new
+      dummy.price_plain = 'incorrect1'
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "is not a number"
+      dummy.save.should eq false
+    end
+
+    it 'should raise the error when value consists more then one decimal separator' do
+      dummy = DummyNotANumber.new
+      dummy.price_plain = '121,212,22'
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "is not a number"
+      dummy.save.should eq false
+    end
+  end
+
+  describe 'when value should be a positive number' do
+    it 'should raise the error when value lesser than 1' do
+      dummy = DummyPositiveNumber.new( price: '-10' )
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "must be greater than 1"
+      dummy.save.should eq false
+      dummy.price_cents.should eq -1000
+    end
+
+    it 'should raise the error when value lesser than 1' do
+      dummy = DummyPositiveNumber.new( price: '0' )
+      dummy.should_not be_valid
+      dummy.errors.count.should eq 1
+      dummy.errors.messages[:price][0].should eq "must be greater than 1"
+      dummy.save.should eq false
+    end
+
+    it 'should be ok when value is greater than 1' do
+      dummy = DummyPositiveNumber.new( price: '10' )
+      dummy.should be_valid
+      dummy.save.should eq true
+    end
+
+    it 'should be ok when value is not present' do
+      dummy = DummyPositiveNumber.new( price: '' )
+      dummy.should be_valid
+      dummy.save.should eq true
     end
   end
 
@@ -157,7 +242,6 @@ describe Mongoid::MoneyField do
     end
   end
 
-
   describe 'when accessing a document from the datastore with a Money datatype and fixed currency' do
     it 'should have correct currency when value is set to 5$' do
       DummyMoneyWithFixedCurrency.create!(price: '5$')
@@ -218,7 +302,7 @@ describe Mongoid::MoneyField do
   describe 'when accessing a document from the datastore with embedded documents with money fields' do
     before(:each) do
       o = DummyOrder.new(first_name: 'test')
-      
+
       o.dummy_line_items << DummyLineItem.new({name: 'item 1', price: Money.new(1299)})
       li = DummyLineItem.new({name: 'item 2', price: Money.new(1499)})
       o.dummy_line_items.push li
@@ -234,8 +318,7 @@ describe Mongoid::MoneyField do
     it 'should have correct value for first item' do
       o = DummyOrder.first
       o.dummy_line_items.last.price.should eq Money.parse('14.99')
-    end
-    
+    end    
   end
   
   describe 'when accessing a document from the datastore with multiple Money datatypes' do
