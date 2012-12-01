@@ -83,7 +83,7 @@ module Mongoid
           define_method( attr_plain ) do
             value = instance_variable_get( "@#{attr_plain}".to_sym )
             value = self.send( name ) if value.nil?
-            value = value.format( symbol: false, no_cents_if_whole: true ) if value.is_a?( Money )
+            value = value.format( symbol: false, no_cents_if_whole: true, thousands_separator: false ) if value.is_a?( Money )
 
             value
           end
