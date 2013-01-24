@@ -72,5 +72,5 @@ DummyMoney.where(price_cents: 123).first
 
 == Copyright
 
-Copyright (c) 2012 glebtv. MIT License.
+Copyright (c) 2012 glebtv (http://rocketscience.pro). MIT License.
 
