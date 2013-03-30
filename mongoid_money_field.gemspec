@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Gleb Tv"]
   spec.email         = ["glebtv@gmail.com"]
   spec.description   = %q{Use RubyMoney with mongoid}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.summary       = %q{Use RubyMoney with mongoid}
   spec.homepage      = "http://github.com/glebtv/mongoid_money_field"
   spec.license       = "MIT"
 
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "mongoid", ">= 2.4.0"
+  spec.add_runtime_dependency "mongoid", ">= 3.0.0"
   spec.add_runtime_dependency "money", ">= 0"
 
   spec.add_development_dependency "rake"

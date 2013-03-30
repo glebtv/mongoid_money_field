@@ -294,6 +294,14 @@ describe Mongoid::MoneyField do
       dummy.price.should be_nil
     end
 
+    it 'stays nil' do
+      dummy = DummyMoney.first
+      dummy.price = ''
+      dummy.price.should be_nil
+      dummy.save.should be_true
+      DummyMoney.first.price.should be_nil
+    end
+
     it 'should be updated correctly' do
       dummy = DummyMoney.first
       dummy.price.should be_nil

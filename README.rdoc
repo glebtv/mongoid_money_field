@@ -15,8 +15,21 @@ A simple gem that creates a Money datatype using RubyMoney for Mongoid.
 
 Inspired by https://gist.github.com/840500
 
+== Alternatives
+
+https://github.com/RubyMoney/money-rails
+
+With v4 storage format of mongoid money field is identical to that of money-rails
+
 == Updating
-v3 breaks backwards compatibility in favour of having syntax and defaults similar to field mongoid macro
+
+v4 is a massive refactor. Storage format is now a hash, like money-rails, instead of two separate cents and currency fields
+Old values should be still accessible after you update. To migrate to new storage format do:
+
+    YourModel.migrate_from_money_field_3!(your_money_fields)
+
+
+v3 has a minor break of backwards compatibility in favour of having syntax and defaults similar to field mongoid macro
 
 To get the same behaviour as 1.0 please add "default: 0" to field declaration, like this
 

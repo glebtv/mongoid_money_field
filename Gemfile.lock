@@ -3,7 +3,7 @@ PATH
   specs:
     mongoid_money_field (4.0.0)
       money
-      mongoid (>= 2.4.0)
+      mongoid (>= 3.0.0)
 
 GEM
   remote: https://rubygems.org/

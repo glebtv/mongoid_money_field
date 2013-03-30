@@ -18,6 +18,22 @@ module Mongoid
             default_currency: nil
         }.merge( opts )
 
+        ensure_default = Proc.new do |currency|
+          if opts[:fixed_currency].nil?
+            if currency.nil?
+              if opts[:default_currency].nil?
+                Money.default_currency
+              else
+                opts[:default_currency]
+              end
+            else
+              currency
+            end
+          else
+            opts[:fixed_currency]
+          end
+        end
+
         [columns].flatten.each do |name|
           default = nil
           name = name.to_s
@@ -56,9 +72,20 @@ module Mongoid
           # mongoid money field 2 compat
           define_method(name) do
             if read_attribute("#{name}_cents").nil?
-              Money.demongoize(read_attribute(name))
+              value = read_attribute(name)
+              if value.nil?
+                nil
+              else
+                if value.is_a?(Hash)
+                  value[:currency_iso] = ensure_default.call(value[:currency_iso])
+                end
+                Money.demongoize(value)
+              end
+
             else
-              Money.new(read_attribute("#{name}_cents"), read_attribute("#{name}_currency"))
+              currency = read_attribute("#{name}_currency")
+              currency = ensure_default.call(currency)
+              Money.new(read_attribute("#{name}_cents"), currency)
             end
           end
 
@@ -74,10 +101,6 @@ module Mongoid
             else
               currency = read_attribute("#{name}_currency")
 
-              unless opts[:fixed_currency].nil?
-                currency = opts[:fixed_currency]
-              end
-
               if currency.nil?
                 if opts[:default_currency].nil?
                   currency = Money.default_currency
@@ -86,6 +109,9 @@ module Mongoid
                 end
               end
 
+              unless opts[:fixed_currency].nil?
+                currency = opts[:fixed_currency]
+              end
               send("#{name}=", Money.new(cents, currency))
             end
           end
@@ -117,6 +143,10 @@ module Mongoid
           # deprecated
           define_method("#{name}_plain=") do |val|
             send("#{name}=", val)
+          end
+          # deprecated
+          define_method("#{name}_plain") do |val|
+            send("#{name}")
           end
         end
       end
