@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    mongoid_money_field (4.0.0)
-      money
+    mongoid_money_field (4.0.1)
+      money (>= 5.0.0)
       mongoid (>= 3.0.0)
 
 GEM
