@@ -1,5 +1,7 @@
 # coding: utf-8
 
+# from https://github.com/RubyMoney/money-rails/blob/master/lib/money-rails/mongoid/money.rb
+
 class Money
   # Converts an object of this instance into a database friendly value.
   def mongoize
