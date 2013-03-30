@@ -8,7 +8,7 @@ class MoneyInput < SimpleForm::Inputs::Base
       input_html_options[:type] ||= "number"
       input_html_options[:step] ||= integer? ? 1 : "any"
     end
-    @builder.text_field("#{attribute_name}_plain", input_html_options)
+    @builder.text_field(attribute_name, input_html_options)
   end
 
   private

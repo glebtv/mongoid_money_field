@@ -1,0 +1,8 @@
+test:
+  sessions:
+    default:
+      database: mongoid_money_field
+      hosts:
+        - localhost:27017
+      options:
+        consistency: :strong
