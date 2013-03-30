@@ -9,5 +9,5 @@ gemfile:
   - gemfiles/money51-mongoid31.gemfile
 rvm:
   - 1.9.3
-  #- rbx-19mode
-  #- jruby-19mode
+  - rbx-19mode
+  - jruby-19mode
