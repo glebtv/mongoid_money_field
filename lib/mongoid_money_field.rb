@@ -1,6 +1,8 @@
-#encoding: utf-8
+# coding: utf-8
 
 require "money"
+
+require "mongoid_money_field/type"
 require "mongoid_money_field/version"
 require "mongoid_money_field/field"
 
@@ -10,92 +12,17 @@ module Mongoid
 
     module ClassMethods
       def money_field(*columns)
-        opts = columns.last.is_a?( Hash ) ? columns.pop : {}
-        opts = {
-            fixed_currency: nil,
-            default: nil,
-            required: false,
-            default_currency: nil
-        }.merge(opts)
-
-        ensure_default = Proc.new do |currency|
-          if opts[:fixed_currency].nil?
-            if currency.nil?
-              if opts[:default_currency].nil?
-                Money.default_currency
-              else
-                opts[:default_currency]
-              end
-            else
-              currency
-            end
-          else
-            opts[:fixed_currency]
-          end
-        end
-
+        opts = columns.last.is_a?(Hash) ? columns.pop : {}
+        
         [columns].flatten.each do |name|
-          default = nil
-          name = name.to_s
-          unless opts[:default].nil?
-            default = Money.parse(opts[:default])
-          end
-
-          field name, type: Money, default: default
-          validates_presence_of name if opts[:required]
-
-          define_method("#{name}=") do |value|
-            instance_variable_set( "@#{name}_before_type_cast".to_sym, value)
-
-            if value.blank?
-              write_attribute(name, nil)
-            else
-              if opts[:default_currency].nil?
-                money = value.to_money
-              else
-                old_default = Money.default_currency
-                Money.default_currency = Money::Currency.new(opts[:default_currency])
-                money = value.to_money
-                Money.default_currency = old_default
-              end
-
-              unless opts[:fixed_currency].nil?
-                money = Money.new(money.cents, opts[:fixed_currency])
-              end
-
-              write_attribute(name, money)
-              remove_attribute("#{name}_currency")
-              remove_attribute("#{name}_cents")
-            end
-          end
-
-          define_method(name) do
-            value = read_attribute(name)
-            if value.nil?
-              nil
-            else
-              if value.is_a?(Hash)
-                value[:currency_iso] = ensure_default.call(value[:currency_iso])
-              end
-              Money.demongoize(value)
-            end
-          end
-
-          define_method("#{name}_before_type_cast") do
-            instance_variable_get( "@#{name}_before_type_cast".to_sym) || send(name).to_s
-          end
-        end
-      end
-
-      def migrate_from_money_field_3!(*columns)
-        each do |val|
-          [columns].flatten.each do |name|
-            val.send("migrate_#{name.to_s}_from_money_3!")
-            val.save!
+          field name, type: MoneyType.new(opts), default: opts[:default]
+          if opts[:required]
+            validates_presence_of name
           end
         end
       end
     end
+
   end
 end
 

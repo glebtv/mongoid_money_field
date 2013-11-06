@@ -6,5 +6,5 @@ class DummyMoney
   
   field :description
   
-  money_field :price, default: 0
+  money_field :price
 end

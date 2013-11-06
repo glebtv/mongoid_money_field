@@ -212,9 +212,9 @@ describe Mongoid::MoneyField do
     end
 
     it 'should be 0 when used with default' do
-      dummy = DummyMoney.new
+      dummy = DummyMoneyWithDefault.new
       dummy.save.should eq true
-      DummyMoney.first.price.cents.should eq 0
+      DummyMoneyWithDefault.first.price.cents.should eq 100
     end
 
     it 'should set money to default currency if money is given without it' do
