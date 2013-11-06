@@ -1,3 +1,3 @@
 module MongoidMoneyField
-  VERSION = "5.0.0.beta1"
+  VERSION = "5.0.0"
 end
