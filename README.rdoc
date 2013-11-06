@@ -19,7 +19,7 @@ Inspired by https://gist.github.com/840500
 
 https://github.com/RubyMoney/money-rails
 
-With v4 storage format of mongoid money field is identical to that of money-rails
+Since v4 storage format of mongoid money field is identical to that of money-rails
 
 == Changelog
 
