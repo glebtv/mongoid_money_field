@@ -21,7 +21,9 @@ https://github.com/RubyMoney/money-rails
 
 With v4 storage format of mongoid money field is identical to that of money-rails
 
-== Updating
+== Changelog
+
+v5 drops compatibility with v3 storage format. Please use v4 until you upgraded your DB.
 
 v4 is a massive refactor. Storage format is now a hash, like money-rails, instead of two separate cents and currency fields
 Old values should be still accessible after you update. To migrate to new storage format do:
@@ -41,7 +43,7 @@ please avoid using v2, i realized that API was stupid after commiting it.
 
 Include the gem in your Gemfile
 
-    gem 'mongoid_money_field'
+    gem 'mongoid_money_field', '~> 5.0.0'
 
 == Usage
 
