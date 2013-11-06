@@ -16,7 +16,7 @@ module Mongoid
             default: nil,
             required: false,
             default_currency: nil
-        }.merge( opts )
+        }.merge(opts)
 
         ensure_default = Proc.new do |currency|
           if opts[:fixed_currency].nil?
@@ -69,84 +69,20 @@ module Mongoid
             end
           end
 
-          # mongoid money field 2 compat
           define_method(name) do
-            if read_attribute("#{name}_cents").nil?
-              value = read_attribute(name)
-              if value.nil?
-                nil
-              else
-                if value.is_a?(Hash)
-                  value[:currency_iso] = ensure_default.call(value[:currency_iso])
-                end
-                Money.demongoize(value)
-              end
-
+            value = read_attribute(name)
+            if value.nil?
+              nil
             else
-              currency = read_attribute("#{name}_currency")
-              currency = ensure_default.call(currency)
-              Money.new(read_attribute("#{name}_cents"), currency)
+              if value.is_a?(Hash)
+                value[:currency_iso] = ensure_default.call(value[:currency_iso])
+              end
+              Money.demongoize(value)
             end
           end
 
           define_method("#{name}_before_type_cast") do
             instance_variable_get( "@#{name}_before_type_cast".to_sym) || send(name).to_s
-          end
-
-          # deprecated
-          define_method("migrate_#{name}_from_money_3!") do
-            cents = read_attribute("#{name}_cents")
-            if cents.nil?
-              send("#{name}=", nil)
-            else
-              currency = read_attribute("#{name}_currency")
-
-              if currency.nil?
-                if opts[:default_currency].nil?
-                  currency = Money.default_currency
-                else
-                  currency = opts[:default_currency]
-                end
-              end
-
-              unless opts[:fixed_currency].nil?
-                currency = opts[:fixed_currency]
-              end
-              send("#{name}=", Money.new(cents, currency))
-            end
-          end
-
-          # deprecated
-          define_method("#{name}_cents") do
-            send(name).nil? ? 0 : send(name).cents
-          end
-
-          # deprecated
-          define_method("#{name}_currency") do
-            if opts[:fixed_currency].nil?
-              send(name).nil? ? Money.default_currency : send(name).currency.iso_code
-            else
-              opts[:fixed_currency]
-            end
-          end
-
-          # deprecated
-          define_method("#{name}_cents=") do |val|
-            send("#{name}=", Money.new(val, send("#{name}_currency")))
-          end
-
-          # deprecated
-          define_method("#{name}_currency=") do |val|
-            send("#{name}=", Money.new(send("#{name}_cents"), val))
-          end
-
-          # deprecated
-          define_method("#{name}_plain=") do |val|
-            send("#{name}=", val)
-          end
-          # deprecated
-          define_method("#{name}_plain") do |val|
-            send("#{name}")
           end
         end
       end

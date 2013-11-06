@@ -84,7 +84,6 @@ describe Mongoid::MoneyField do
       dummy.errors.count.should eq 1
       dummy.errors.messages[:price][0].should eq "must be greater than 1"
       dummy.save.should eq false
-      dummy.price_cents.should eq -1000
     end
 
     it 'should raise the error when value lesser than 1' do
