@@ -12,7 +12,7 @@ GIT
 PATH
   remote: .
   specs:
-    mongoid_money_field (5.0.0)
+    mongoid_money_field (5.0.1)
       money (>= 5.0.0)
       mongoid (>= 3.0.0)
 
@@ -36,8 +36,8 @@ GEM
     i18n (0.6.5)
     json (1.8.1)
     minitest (4.7.5)
-    money (5.1.1)
-      i18n (~> 0.6.0)
+    money (6.0.0)
+      i18n (~> 0.6.4)
     mongoid-rspec (1.7.0)
       mongoid (>= 3.0.1)
       rake
