@@ -67,6 +67,10 @@ class MoneyType
       unless @options[:default_currency].nil?
         Money.default_currency = old_default
       end
+      
+      if @options[:fixed_currency]
+        ret[:currency_iso] = @options[:fixed_currency]
+      end
 
       ret
     end
