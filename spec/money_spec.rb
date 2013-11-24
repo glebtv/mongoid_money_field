@@ -256,6 +256,13 @@ describe Mongoid::MoneyField do
       dummy.price.should eq Money.parse('5 GBP')
     end
 
+    it 'works for other field' do
+      DummyMoneyWithFixedCurrency.create!(old_price: '5$', price: '')
+      dummy = DummyMoneyWithFixedCurrency.first
+      dummy.price.should be_nil
+      dummy.old_price.cents.should eq 500
+    end
+
     it 'should have correct currency when value is set to 100 RUB' do
       DummyMoneyWithFixedCurrency.create!(price: '100 RUB')
       dummy = DummyMoneyWithFixedCurrency.first

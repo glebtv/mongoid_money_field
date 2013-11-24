@@ -12,7 +12,7 @@ GIT
 PATH
   remote: .
   specs:
-    mongoid_money_field (5.0.1)
+    mongoid_money_field (5.0.2)
       money (>= 5.0.0)
       mongoid (>= 3.0.0)
 
