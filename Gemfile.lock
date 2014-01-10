@@ -1,68 +1,72 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 9296c93725793a0b43461b9f4b680605d28f5aa2
+  revision: a94c2f43573e58f973913c881ad9d11d62bf857c
   branch: master
   specs:
-    mongoid (4.0.0)
-      activemodel (~> 4.0.0)
-      moped (~> 2.0.beta3)
-      origin (~> 1.0)
-      tzinfo (~> 0.3.37)
+    mongoid (4.0.0.alpha2)
+      activemodel (>= 4.0.0)
+      moped (~> 2.0.beta5)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
 
 PATH
   remote: .
   specs:
-    mongoid_money_field (5.0.2)
+    mongoid_money_field (5.0.3)
       money (>= 5.0.0)
       mongoid (>= 3.0.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.0.1)
-      activesupport (= 4.0.1)
+    activemodel (4.0.2)
+      activesupport (= 4.0.2)
       builder (~> 3.1.0)
-    activesupport (4.0.1)
+    activesupport (4.0.2)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     atomic (1.1.14)
-    bson (2.0.0.rc3)
+    bson (2.1.0)
     builder (3.1.4)
-    database_cleaner (0.9.1)
-    diff-lcs (1.2.4)
-    i18n (0.6.5)
+    connection_pool (1.2.0)
+    database_cleaner (1.2.0)
+    diff-lcs (1.2.5)
+    docile (1.1.1)
+    i18n (0.6.9)
     json (1.8.1)
     minitest (4.7.5)
     money (6.0.0)
       i18n (~> 0.6.4)
-    mongoid-rspec (1.7.0)
+    mongoid-rspec (1.10.0)
       mongoid (>= 3.0.1)
       rake
-      rspec (>= 2.9)
-    moped (2.0.0.beta3)
-      bson (~> 2.0.0.rc3)
-      optionable (~> 0.1.1)
-    multi_json (1.8.2)
-    optionable (0.1.1)
-    origin (1.1.0)
-    rake (10.1.0)
+      rspec (>= 2.14)
+    moped (2.0.0.beta5)
+      bson (~> 2.1)
+      connection_pool (~> 1.2)
+      optionable (~> 0.2.0)
+    multi_json (1.8.4)
+    optionable (0.2.0)
+    origin (2.1.0)
+    rake (10.1.1)
     rdoc (4.0.1)
       json (~> 1.4)
-    rspec (2.13.0)
-      rspec-core (~> 2.13.0)
-      rspec-expectations (~> 2.13.0)
-      rspec-mocks (~> 2.13.0)
-    rspec-core (2.13.1)
-    rspec-expectations (2.13.0)
+    rspec (2.14.1)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
+    rspec-core (2.14.7)
+    rspec-expectations (2.14.4)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.13.1)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
-    simplecov-html (0.7.1)
+    rspec-mocks (2.14.4)
+    simplecov (0.8.2)
+      docile (~> 1.1.0)
+      multi_json
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
     thread_safe (0.1.3)
       atomic
     tzinfo (0.3.38)
@@ -71,12 +75,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.3.4)
-  database_cleaner (~> 0.9.1)
+  bundler
+  database_cleaner (~> 1.2.0)
   mongoid!
-  mongoid-rspec (~> 1.7.0)
+  mongoid-rspec (~> 1.10.0)
   mongoid_money_field!
   rake
   rdoc (~> 4.0.1)
-  rspec (~> 2.13.0)
-  simplecov (~> 0.7.1)
+  rspec (~> 2.14.0)
+  simplecov (~> 0.8.2)
