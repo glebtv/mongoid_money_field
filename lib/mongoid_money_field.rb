@@ -1,6 +1,8 @@
 # coding: utf-8
 
 require "money"
+require 'monetize'
+require 'monetize/core_extensions'
 
 require "mongoid_money_field/type"
 require "mongoid_money_field/version"
