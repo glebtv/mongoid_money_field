@@ -1,6 +1,8 @@
 #encoding: utf-8
 
 require "money"
+require 'monetize'
+require 'monetize/core_extensions'
 require "mongoid_money_field/version"
 require "mongoid_money_field/field"
 
@@ -38,7 +40,7 @@ module Mongoid
           default = nil
           name = name.to_s
           unless opts[:default].nil?
-            default = Money.parse(opts[:default])
+            default = Monetize.parse(opts[:default])
           end
 
           field name, type: Money, default: default
