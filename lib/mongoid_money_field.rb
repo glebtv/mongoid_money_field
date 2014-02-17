@@ -172,3 +172,7 @@ end
 if Object.const_defined?("SimpleForm")
   require "mongoid_money_field/simple_form/money_input"
 end
+
+if Object.const_defined?("RailsAdmin")
+  require "mongoid_money_field/rails_admin"
+end
