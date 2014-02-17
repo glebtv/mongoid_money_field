@@ -157,7 +157,11 @@ module Mongoid
         each do |val|
           [columns].flatten.each do |name|
             val.send("migrate_#{name.to_s}_from_money_3!")
-            val.save!
+            if val.save
+            else
+              puts "Error: model failed validation and needs to be updated manually:"
+              p val
+            end
           end
         end
       end
