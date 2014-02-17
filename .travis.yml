@@ -1,12 +1,6 @@
 language: ruby
 services: mongodb
-gemfile:
-  #- gemfiles/money4-mongoid3.gemfile
-  #- gemfiles/money4-mongoid31.gemfile
-  - gemfiles/money50-mongoid3.gemfile
-  #- gemfiles/money50-mongoid31.gemfile
-  - gemfiles/money51-mongoid3.gemfile
-  - gemfiles/money51-mongoid31.gemfile
+
 rvm:
   - 1.9.3
   - rbx-19mode
