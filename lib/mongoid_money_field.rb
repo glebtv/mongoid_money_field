@@ -97,24 +97,26 @@ module Mongoid
 
           # deprecated
           define_method("migrate_#{name}_from_money_3!") do
-            cents = read_attribute("#{name}_cents")
-            if cents.nil?
-              send("#{name}=", nil)
-            else
-              currency = read_attribute("#{name}_currency")
+            if read_attribute(name).nil?
+              cents = read_attribute("#{name}_cents")
+              if cents.nil?
+                send("#{name}=", nil)
+              else
+                currency = read_attribute("#{name}_currency")
 
-              if currency.nil?
-                if opts[:default_currency].nil?
-                  currency = Money.default_currency
-                else
-                  currency = opts[:default_currency]
+                if currency.nil?
+                  if opts[:default_currency].nil?
+                    currency = Money.default_currency
+                  else
+                    currency = opts[:default_currency]
+                  end
                 end
-              end
 
-              unless opts[:fixed_currency].nil?
-                currency = opts[:fixed_currency]
+                unless opts[:fixed_currency].nil?
+                  currency = opts[:fixed_currency]
+                end
+                send("#{name}=", Money.new(cents, currency))
               end
-              send("#{name}=", Money.new(cents, currency))
             end
           end
 
