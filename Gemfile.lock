@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mongoid_money_field (4.0.5)
+    mongoid_money_field (4.0.6)
       monetize
       money (~> 6.1.0.beta1)
       mongoid (>= 3.0.0)
@@ -35,7 +35,7 @@ GEM
       rake
       rspec (>= 2.14)
     moped (1.5.2)
-    multi_json (1.8.4)
+    multi_json (1.9.0)
     origin (1.1.0)
     rake (10.1.1)
     rdoc (4.1.1)
@@ -53,7 +53,7 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    tzinfo (0.3.38)
+    tzinfo (0.3.39)
 
 PLATFORMS
   ruby
