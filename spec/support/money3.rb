@@ -24,7 +24,7 @@ class Money3Compat
 
   field :description
 
-  money_field :price, default: 0
+  money_field :price
   money_field :price_no_default
   money_field :price_with_fix, fixed_currency: 'GBP'
 end

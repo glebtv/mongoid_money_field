@@ -66,14 +66,18 @@ module Mongoid
               end
 
               write_attribute(name, money)
-              remove_attribute("#{name}_currency")
-              remove_attribute("#{name}_cents")
             end
+            remove_attribute("#{name}_currency")
+            remove_attribute("#{name}_cents")
           end
 
           # mongoid money field 2 compat
           define_method(name) do
-            if read_attribute("#{name}_cents").nil?
+            if read_attribute("#{name}").nil? && !read_attribute("#{name}_cents").nil?
+              currency = read_attribute("#{name}_currency")
+              currency = ensure_default.call(currency)
+              Money.new(read_attribute("#{name}_cents"), currency)
+            else
               value = read_attribute(name)
               if value.nil?
                 nil
@@ -83,11 +87,6 @@ module Mongoid
                 end
                 Money.demongoize(value)
               end
-
-            else
-              currency = read_attribute("#{name}_currency")
-              currency = ensure_default.call(currency)
-              Money.new(read_attribute("#{name}_cents"), currency)
             end
           end
 
