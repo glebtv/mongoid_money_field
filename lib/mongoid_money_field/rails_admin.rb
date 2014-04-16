@@ -1,19 +1,28 @@
 require 'rails_admin/adapters/mongoid'
-require 'rails_admin/config/fields/types/string'
+begin
+  require 'rails_admin/adapters/mongoid/property'
+rescue Exception => e 
+end
+
 module RailsAdmin
   module Adapters
     module Mongoid
-      alias_method :type_lookup_without_money, :type_lookup
-      def type_lookup(name, field)
-        if field.type.to_s == 'Money' || field.type.class.name == 'MoneyType'
-          { :type => :money_field }
-        else
-          type_lookup_without_money(name, field)
+      class Property
+        alias_method :type_without_money_field, :type
+        def type
+          if property.type.to_s == 'Money' || property.type.class.name == 'MoneyType'
+            :money_field
+          else
+            type_without_money_field
+          end
         end
       end
     end
   end
+end
 
+require 'rails_admin/config/fields/types/string'
+module RailsAdmin
   module Config
     module Fields
       module Types
@@ -39,4 +48,3 @@ module RailsAdmin
     end
   end
 end
-
