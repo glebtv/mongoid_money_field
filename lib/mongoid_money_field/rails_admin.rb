@@ -31,7 +31,7 @@ module RailsAdmin
           RailsAdmin::Config::Fields::Types::register(self)
 
           register_instance_option :pretty_value do
-            ret = if value.class.name == 'Hash' && value['cents']
+            ret = if (value.class.name == 'Hash' || value.class.name == 'BSON::Document') && value['cents']
               "%.2f" % ::Money.new(value['cents'], value['currency_iso']).to_f
             elsif value.respond_to?(:cents)
               "%.2f" % value.to_f

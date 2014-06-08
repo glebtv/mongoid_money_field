@@ -304,7 +304,7 @@ describe Mongoid::MoneyField do
       dummy = DummyMoney.first
       dummy.price = ''
       dummy.price.should be_nil
-      dummy.save.should be_true
+      expect(dummy.save).to be_truthy
       DummyMoney.first.price.should be_nil
     end
 
