@@ -15,48 +15,48 @@ describe Money do
 
   context "mongoize" do
     it "mongoizes correctly a Money object to a hash of cents and currency" do
-      priceable.price.cents.should == 100
-      priceable.price.currency.should == Money::Currency.find('EUR')
+      expect(priceable.price.cents).to eq(100)
+      expect(priceable.price.currency).to eq(Money::Currency.find('EUR'))
     end
 
     it "mongoizes correctly a Numeric object to a hash of cents and currency" do
-      priceable_from_num.price.cents.should == 100
-      priceable_from_num.price.currency.should == Money.default_currency
+      expect(priceable_from_num.price.cents).to eq(100)
+      expect(priceable_from_num.price.currency).to eq(Money.default_currency)
     end
 
     it "mongoizes correctly a String object to a hash of cents and currency" do
-      priceable_from_string.price.cents.should == 100
-      priceable_from_string.price.currency.should == Money::Currency.find('EUR')
+      expect(priceable_from_string.price.cents).to eq(100)
+      expect(priceable_from_string.price.currency).to eq(Money::Currency.find('EUR'))
     end
 
     it "mongoizes correctly a hash of cents and currency" do
-      priceable_from_hash.price.cents.should == 100
-      priceable_from_hash.price.currency.should == Money::Currency.find('EUR')
+      expect(priceable_from_hash.price.cents).to eq(100)
+      expect(priceable_from_hash.price.currency).to eq(Money::Currency.find('EUR'))
     end
 
     it "mongoizes correctly a HashWithIndifferentAccess of cents and currency" do
-      priceable_from_hash_with_indifferent_access.price.cents.should == 100
-      priceable_from_hash_with_indifferent_access.price.currency.should == Money::Currency.find('EUR')
+      expect(priceable_from_hash_with_indifferent_access.price.cents).to eq(100)
+      expect(priceable_from_hash_with_indifferent_access.price.currency).to eq(Money::Currency.find('EUR'))
     end
   end
 
   context "demongoize" do
     subject { Priceable.first.price }
-    it { should be_an_instance_of(Money) }
-    it { should == Money.new(100, 'EUR') }
+    it { is_expected.to be_an_instance_of(Money) }
+    it { is_expected.to eq(Money.new(100, 'EUR')) }
     it "returns nil if a nil value was stored" do
       nil_priceable = Priceable.create(:price => nil)
-      nil_priceable.price.should be_nil
+      expect(nil_priceable.price).to be_nil
     end
     it 'returns nil if an unknown value was stored' do
       zero_priceable = Priceable.create(:price => [])
-      zero_priceable.price.should be_nil
+      expect(zero_priceable.price).to be_nil
     end
   end
 
   context "evolve" do
     it "transforms correctly a Money object to a Mongo friendly value" do
-      Priceable.where(:price => Money.new(100, 'EUR')).first.should == priceable
+      expect(Priceable.where(:price => Money.new(100, 'EUR')).first).to eq(priceable)
     end
   end
 end
