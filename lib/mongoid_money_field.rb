@@ -53,7 +53,11 @@ module Mongoid
               write_attribute(name, nil)
             else
               if opts[:default_currency].nil?
-                money = value.to_money
+                if value.is_a?(Hash)
+                  money = Money.new(value['cents'], value['currency_iso'])
+                else
+                  money = value.to_money
+                end
               else
                 old_default = Money.default_currency
                 Money.default_currency = Money::Currency.new(opts[:default_currency])
