@@ -3,6 +3,6 @@
 require 'spec_helper'
 
 describe DummyMoney do
-  it { should allow_mass_assignment_of(:description) }
-  it { should allow_mass_assignment_of(:price) }
+  it { is_expected.to allow_mass_assignment_of(:description) }
+  it { is_expected.to allow_mass_assignment_of(:price) }
 end
