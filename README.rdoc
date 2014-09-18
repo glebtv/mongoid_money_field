@@ -43,7 +43,7 @@ please avoid using v2, i realized that API was stupid after commiting it.
 
 Include the gem in your Gemfile
 
-    gem 'mongoid_money_field', '~> 5.0.0'
+    gem 'mongoid_money_field', '~> 5.2.1'
 
 == Usage
 
