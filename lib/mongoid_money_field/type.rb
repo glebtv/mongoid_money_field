@@ -14,16 +14,15 @@ class MoneyType
     # this custom class from it.
     def demongoize(object)
       if object.is_a?(Hash)
-        object = object.symbolize_keys
-
-        if object.has_key?(:cents)
+        object.stringify_keys!
+        if object.has_key?('cents')
           if @options[:fixed_currency]
-            ::Money.new(object[:cents], @options[:fixed_currency])
+            ::Money.new(object['cents'], @options[:fixed_currency])
           else
-            if object.has_key?(:currency_iso)
-              ::Money.new(object[:cents], object[:currency_iso])
+            if object.has_key?('currency_iso')
+              ::Money.new(object['cents'], object['currency_iso'])
             else
-              ::Money.new(object[:cents], @options[:default_currency])
+              ::Money.new(object['cents'], @options[:default_currency])
             end
           end
         else

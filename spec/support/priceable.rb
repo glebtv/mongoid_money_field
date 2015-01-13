@@ -1,5 +1,5 @@
 class Priceable
   include Mongoid::Document
 
-  field :price, :type => Money
+  field :price, :type => MoneyType.new
 end

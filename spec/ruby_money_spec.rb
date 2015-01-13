@@ -41,9 +41,12 @@ describe Money do
   end
 
   context "demongoize" do
-    subject { Priceable.first.price }
-    it { is_expected.to be_an_instance_of(Money) }
-    it { is_expected.to eq(Money.new(100, 'EUR')) }
+    before :each do
+      priceable.save
+      @subj = Priceable.first.price
+    end
+    it { expect(@subj).to be_an_instance_of(Money) }
+    it { expect(@subj).to eq(Money.new(100, 'EUR')) }
     it "returns nil if a nil value was stored" do
       nil_priceable = Priceable.create(:price => nil)
       expect(nil_priceable.price).to be_nil
