@@ -2,9 +2,6 @@ language: ruby
 
 services: mongodb
 
-gemfile:
-  - gemfiles/money6-mongoid4.gemfile
-
 rvm:
   - 2.2.2
 
