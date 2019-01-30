@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "mongoid", "~> 5.2"
+  spec.add_runtime_dependency "mongoid", "~> 6.1.0"
   spec.add_runtime_dependency "money", "~> 6.9.0"
   spec.add_runtime_dependency "monetize"
 
