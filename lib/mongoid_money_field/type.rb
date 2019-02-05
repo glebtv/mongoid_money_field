@@ -28,7 +28,7 @@ class MoneyType
         else
           nil
         end
-      elsif object.is_a?(Fixnum) || object.is_a?(Float)
+      elsif object.is_a?(Numeric)
         if @options[:fixed_currency]
           ::Money.new(object, @options[:fixed_currency])
         else
