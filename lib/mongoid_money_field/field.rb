@@ -27,6 +27,8 @@ class Money
     # stored in the database.
     def mongoize(object)
       case
+        when object.is_a?(BSON::Document) then
+          ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.is_a?(Money) then object.mongoize
         when object.is_a?(Hash) then
           object.symbolize_keys! if object.respond_to?(:symbolize_keys!)

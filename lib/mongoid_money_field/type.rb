@@ -48,6 +48,8 @@ class MoneyType
       end
 
       ret = case
+        when object.is_a?(BSON::Document) then
+          ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.is_a?(Money) then object.mongoize
         when object.is_a?(Hash) then
           object.symbolize_keys! if object.respond_to?(:symbolize_keys!)
@@ -66,7 +68,7 @@ class MoneyType
       unless @options[:default_currency].nil?
         Money.default_currency = old_default
       end
-      
+
       if !ret.nil? && @options[:fixed_currency]
         ret[:currency_iso] = @options[:fixed_currency]
       end

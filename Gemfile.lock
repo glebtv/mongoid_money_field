@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mongoid_money_field (7.2.0)
+    mongoid_money_field (7.3.0)
       monetize
       money (~> 6.19)
       mongoid (~> 7.0)
