@@ -48,11 +48,9 @@ class MoneyType
       end
 
       ret = case
-        when object.is_a?(BSON::Document) then
-          ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.is_a?(Money) then object.mongoize
         when object.is_a?(Hash) then
-          object.symbolize_keys! if object.respond_to?(:symbolize_keys!)
+          object.symbolize_keys! if object.respond_to?(:symbolize_keys!) && !object.is_a?(BSON::Document)
           ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.blank? then
           if !@options[:default].nil?

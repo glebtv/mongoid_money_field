@@ -16,7 +16,7 @@ class Money
     # this custom class from it.
     def demongoize(object)
       if object.is_a?(Hash)
-        object = object.symbolize_keys
+        object = object.symbolize_keys unless object.is_a?(BSON::Document)
         object.has_key?(:cents) ? ::Money.new(object[:cents], object[:currency_iso]) : nil
       else
         nil
@@ -27,11 +27,9 @@ class Money
     # stored in the database.
     def mongoize(object)
       case
-        when object.is_a?(BSON::Document) then
-          ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.is_a?(Money) then object.mongoize
         when object.is_a?(Hash) then
-          object.symbolize_keys! if object.respond_to?(:symbolize_keys!)
+          object.symbolize_keys! if object.respond_to?(:symbolize_keys!) && !object.is_a?(BSON::Document)
           ::Money.new(object[:cents], object[:currency_iso]).mongoize
         when object.respond_to?(:to_money) then
           object.to_money.mongoize
