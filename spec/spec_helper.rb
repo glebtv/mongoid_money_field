@@ -9,7 +9,7 @@ SimpleCov.start
 
 require 'bundler/setup'
 require 'mongoid'
-require 'database_cleaner'
+require 'database_cleaner-mongoid'
 require 'mongoid-rspec'
 
 require 'mongoid_money_field'
@@ -38,7 +38,8 @@ end
 
 RSpec.configure do |config|
   config.before :suite do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner[:mongoid].strategy = [:deletion]
+    #DatabaseCleaner.strategy = :truncation
   end
   config.after :each do
     DatabaseCleaner.clean

@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "mongoid", "~> 7.0"
-  spec.add_runtime_dependency "money", "~> 6.13.2"
+  spec.add_runtime_dependency "money", "~> 6.19"
   spec.add_runtime_dependency "monetize"
 
   spec.add_development_dependency "rake"
@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rdoc"
   spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "database_cleaner"
+  spec.add_development_dependency "database_cleaner-mongoid"
   spec.add_development_dependency "mongoid-rspec"
 end

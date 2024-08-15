@@ -3,4 +3,8 @@ test:
     default:
       database: mongoid_money_field
       hosts:
-        - localhost:27017
+        - localhost:27019
+      options:
+        user: 'admin'
+        password: 'rs123456'
+        auth_source: admin
